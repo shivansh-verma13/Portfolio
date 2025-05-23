@@ -1,0 +1,65 @@
+.navbar {
+  height: 100px;
+}
+
+.wrapper {
+  max-width: 1366px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+span {
+  font-weight: bold;
+  margin-left: 2%;
+}
+
+.social {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+}
+
+a > img:hover {
+  scale: 2;
+  padding: 2px;
+  border-radius: 50%;
+  background: orange;
+}
+
+a > img {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 738px) {
+  .wrapper > span {
+    display: none;
+  }
+
+  .wrapper {
+    justify-content: flex-end;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .wrapper > span {
+    display: none;
+  }
+
+  .wrapper {
+    justify-content: flex-end;
+    padding: 20px;
+  }
+}
+
+
+@media (max-width: 1366px) and (min-width: 1024px) {
+  .wrapper > span {
+    margin-left: 8%;
+  }
+}

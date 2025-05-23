@@ -1,0 +1,202 @@
+.contact {
+  height: 100%;
+  max-width: 1366px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.contactTextContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.contactTextContainer > h1 {
+  font-size: 100px;
+  line-height: 88px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.item > span {
+  font-weight: 300;
+  align-self: flex-start;
+  margin-left: 0;
+}
+
+.formContainer {
+  flex: 1;
+  position: relative;
+}
+
+.formContainer > form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formContainer > form > input,
+textarea {
+  padding: 20px;
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  border-radius: 5px;
+}
+
+.formContainer > form > button {
+  padding: 20px;
+  border: none;
+  background-color: orange;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.formContainer > form > button {
+  position: relative;
+  transition: 0.3s ease-in-out;
+  z-index: 0;
+}
+
+.formContainer > form > button > span {
+  z-index: 1;
+  font-weight: 500;
+}
+
+.formContainer > form > button::before {
+  content: "";
+  width: 0%;
+  height: 100%;
+  position: absolute;
+  background-color: white;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  transition: 0.3s ease-in-out;
+}
+
+.formContainer > form > button:hover {
+  color: orange;
+  border: none;
+  font-weight: 900;
+  font-size: 1.1rem;
+}
+
+.formContainer > form > button:hover::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.phone {
+  stroke: orange;
+  position: absolute;
+  margin: auto;
+  z-index: -1;
+}
+
+@media (max-width: 738px) {
+  .contact {
+    width: 100%;
+    max-height: 300px;
+    padding: 10px;
+    flex-direction: column;
+  }
+  .item {
+    align-items: center;
+    /* display: none; */
+  }
+  .contactTextContainer {
+    gap: 5px;
+    text-align: center;
+    align-items: center;
+    margin: 70px;
+    margin-top: 50px;
+    /* height: 50%; */
+  }
+  .contactTextContainer > h1 {
+    font-size: 30px;
+    line-height: 1.5;
+    margin-bottom: 5%;
+  }
+  .formContainer > form > input,
+  textarea {
+    padding: 10px;
+  }
+  .formContainer > form > button {
+    padding: 10px;
+  }
+  .formContainer {
+    padding: 50px;
+    width: 100%;
+    max-height: 300px;
+    margin-top: -40%;
+  }
+  .phone > svg {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+@media ((max-width: 1024px) and (min-width: 738px)) {
+  .contact {
+    width: 100%;
+    max-height: 300px;
+    padding: 10px;
+    flex-direction: column;
+  }
+  .item {
+    align-items: center;
+    /* display: none; */
+  }
+  .contactTextContainer {
+    gap: 5px;
+    text-align: center;
+    align-items: center;
+    margin: 70px;
+    margin-top: 50px;
+    /* height: 50%; */
+  }
+  .contactTextContainer > h1 {
+    font-size: 30px;
+    line-height: 1.5;
+    margin-bottom: 5%;
+    margin-top: 8%;
+  }
+  .formContainer > form > input,
+  textarea {
+    padding: 10px;
+    width: 100%;
+  }
+  .formContainer > form > button {
+    padding: 10px;
+  }
+  .formContainer {
+    padding: 50px;
+    width: 100%;
+    max-height: 300px;
+    /* margin-top: -40%; */
+  }
+  .phone > svg {
+    width: 450px;
+    height: 450px;
+  }
+}
+
+@media (max-width: 1366px) and (min-width: 1024px) {
+  .contact {
+    margin: 8%;
+  }
+  .contactTextContainer > h1{
+    font-size: 50px;
+  }
+  /*  */
+}

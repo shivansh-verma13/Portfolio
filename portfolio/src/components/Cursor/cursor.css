@@ -1,0 +1,21 @@
+.cursor {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 2px 2px 20px orange;
+  background-color: rebeccapurple;
+  position: fixed;
+  z-index: 999;
+}
+
+@media (max-width: 738px) {
+  .cursor {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 768px) {
+  .cursor {
+    display: none;
+  }
+}
