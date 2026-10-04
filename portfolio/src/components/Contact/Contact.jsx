@@ -1,158 +1,159 @@
+import { useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { profile } from "../../data/profile";
+import { contactConfig, sendContact } from "../../lib/contact";
+import Arrow from "../shared/Arrow";
 import "./contact.css";
-import { motion } from "framer-motion";
-import emailjs from "@emailjs/browser";
-import { useRef } from "react";
-import { toast } from "react-hot-toast";
-
-const variants = {
-  initial: {
-    y: 500,
-    opacity: 0,
-  },
-  animate: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const Contact = () => {
-  const form = useRef();
-
-  const sendEmail = (e) => {
-    e.preventDefault();
-    toast.loading("Sending email...", { id: "sending-email" });
-    emailjs
-      .sendForm("service_l1t91zo", "template_aolg40s", form.current, {
-        publicKey: "uvYherv7v1bJuizLo",
-      })
-      .then(
-        () => {
-          form.current.reset();
-          toast.success("Sent email successfully!", { id: "sending-email" });
-        },
-        () => {
-          form.current.reset();
-          toast.error("Email sending failed", { id: "sending-email" });
-        }
+export default function Contact() {
+  const form = useRef(null);
+  const pending = useRef(false);
+  const [status, setStatus] = useState("idle");
+  const [message, setMessage] = useState("");
+  const configured = Object.values(contactConfig).every(Boolean);
+  async function submit(event) {
+    event.preventDefault();
+    if (pending.current) return;
+    if (!form.current.reportValidity()) return;
+    const fields = new FormData(form.current);
+    if (
+      !String(fields.get("name")).trim() ||
+      !String(fields.get("message")).trim()
+    ) {
+      setStatus("error");
+      setMessage("Please include your name and a message.");
+      return;
+    }
+    if (fields.get("website")) return;
+    if (!configured) {
+      setStatus("error");
+      setMessage(
+        "The contact form is not configured yet. Please use the email link instead.",
       );
-  };
-
+      return;
+    }
+    pending.current = true;
+    setStatus("sending");
+    setMessage("Sending your message…");
+    try {
+      await sendContact(form.current, contactConfig);
+      form.current.reset();
+      setStatus("success");
+      setMessage("Message sent. Thanks for reaching out.");
+      toast.success("Message sent.");
+    } catch {
+      setStatus("error");
+      setMessage(
+        "Your message could not be sent. Please try again or email me directly.",
+      );
+      toast.error("Could not send your message.");
+    } finally {
+      pending.current = false;
+    }
+  }
   return (
-    <motion.div
-      className="contact"
-      variants={variants}
-      initial="initial"
-      whileInView="animate"
+    <section
+      className="section contact-section"
+      id="contact"
+      tabIndex={-1}
+      aria-labelledby="contact-heading"
     >
-      <motion.div variants={variants} className="contactTextContainer">
-        <motion.h1 variants={variants}>Let&apos;s Work Together</motion.h1>
-        <motion.div variants={variants} className="item">
-          <h2>Mail</h2>
-          <span>shivansh.vrma.10@gmail.com</span>
-        </motion.div>
-        <motion.div variants={variants} className="item">
-          <h2>Address</h2>
-          <span>Ghaziabad, U.P.</span>
-        </motion.div>
-        <motion.div variants={variants} className="item">
-          <h2>Phone</h2>
-          <span>(+91) 7065595286</span>
-        </motion.div>
-      </motion.div>
-      <div className="formContainer">
-        <motion.div
-          className="phone"
-          initial={{ opacity: 1 }}
-          whileInView={{ opacity: 0 }}
-          transition={{ delay: 3, duration: 1 }}
-        >
-          <svg
-            width="450px"
-            height="450px"
-            viewBox="0 0 64 64"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-          >
-            <motion.path
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              transition={{ duration: 3 }}
-              d="M49 15a24 24 0 0 1 0 34"
-            />
-            <motion.path
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              transition={{ duration: 3 }}
-              d="M42 22a14.15 14.15 0 0 1 0 20"
-            />
-            <motion.rect
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              transition={{ duration: 3 }}
-              x="8"
-              y="8"
-              width="28"
-              height="48"
-              rx="4"
-            />
-            <motion.line
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              transition={{ duration: 3 }}
-              x1="18"
-              y1="12"
-              x2="26"
-              y2="12"
-            />
-            <motion.line
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              transition={{ duration: 3 }}
-              x1="20"
-              y1="52"
-              x2="24"
-              y2="52"
-            />
-          </svg>
-        </motion.div>
-        <motion.form
+      <div className="container contact-grid">
+        <div className="contact-copy">
+          <p className="eyebrow">07 / LET’S CONNECT</p>
+          <h2 id="contact-heading">
+            Let’s build
+            <br />
+            something useful<span>.</span>
+          </h2>
+          <p>
+            Have a software engineering role, a product to build, or a technical
+            problem worth discussing? I’d like to hear about it.
+          </p>
+          <a className="contact-email" href={`mailto:${profile.email}`}>
+            {profile.email} <Arrow />
+          </a>
+          <div className="contact-social">
+            <a
+              href={profile.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn ↗
+            </a>
+            <a href={profile.github} target="_blank" rel="noopener noreferrer">
+              GitHub ↗
+            </a>
+          </div>
+          <span className="mono muted contact-location">
+            Based in {profile.location}
+          </span>
+        </div>
+        <form
           ref={form}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 4, duration: 1 }}
-          onSubmit={sendEmail}
+          onSubmit={submit}
+          className="contact-form"
+          aria-busy={status === "sending"}
         >
+          <div className="form-heading">
+            <h3>Send a message</h3>
+            <span className="mono muted">SAY HELLO</span>
+          </div>
+          <label htmlFor="contact-name">Name</label>
           <input
-            autoComplete="off"
-            type="text"
-            required
-            placeholder="Name"
+            id="contact-name"
             name="name"
-          />
-          <input
-            autoComplete="off"
-            type="email"
+            autoComplete="name"
+            placeholder="Your name"
             required
-            placeholder="Email"
+            maxLength={100}
+          />
+          <label htmlFor="contact-email">Email</label>
+          <input
+            id="contact-email"
+            type="email"
             name="email"
+            autoComplete="email"
+            placeholder="you@company.com"
+            required
+            maxLength={254}
           />
+          <label htmlFor="contact-message">Message</label>
           <textarea
-            autoComplete="off"
-            rows={8}
-            placeholder="Message"
+            id="contact-message"
             name="message"
+            placeholder="Tell me a little about the opportunity…"
+            rows={5}
+            required
+            maxLength={5000}
           />
-          <button>
-            <span>Let&apos;s Connect</span>
+          <div className="honeypot" aria-hidden="true">
+            <label htmlFor="contact-website">Website</label>
+            <input
+              id="contact-website"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
+          <button
+            className="button button-primary"
+            type="submit"
+            disabled={status === "sending"}
+          >
+            {status === "sending" ? "Sending…" : "Send message"} <Arrow />
           </button>
-        </motion.form>
+          <p
+            className={`form-status status-${status}`}
+            role="status"
+            aria-live="polite"
+          >
+            {message ||
+              (configured
+                ? "Your message goes directly to my inbox."
+                : "Prefer email? Use the direct link to get in touch.")}
+          </p>
+        </form>
       </div>
-    </motion.div>
+    </section>
   );
-};
-
-export default Contact;
+}

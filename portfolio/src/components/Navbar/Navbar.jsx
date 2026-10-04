@@ -1,35 +1,112 @@
-import Sidebar from "../Sidebar/Sidebar";
+import ThemeToggle from "./ThemeToggle";
+import { useEffect, useRef, useState } from "react";
+import { navigation, profile } from "../../data/profile";
 import "./Navbar.css";
-import { motion } from "framer-motion";
-
-export const Navbar = () => {
+export function Navbar() {
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("");
+  const header = useRef(null);
+  const toggle = useRef(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting);
+        if (visible.length) setActive(visible[0].target.id);
+      },
+      { rootMargin: "-20% 0px -60% 0px" },
+    );
+    navigation.forEach(({ id }) => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+    const home = document.getElementById("home");
+    if (home) observer.observe(home);
+    return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    if (!open) return;
+    const close = (event) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        toggle.current?.focus();
+      }
+      if (
+        event.type === "pointerdown" &&
+        !header.current?.contains(event.target)
+      )
+        setOpen(false);
+      if (event.type === "focusin" && !header.current?.contains(event.target))
+        setOpen(false);
+    };
+    const desktop = window.matchMedia("(min-width: 769px)");
+    const resize = () => {
+      if (desktop.matches) setOpen(false);
+    };
+    document.addEventListener("keydown", close);
+    document.addEventListener("pointerdown", close);
+    document.addEventListener("focusin", close);
+    desktop.addEventListener("change", resize);
+    return () => {
+      document.removeEventListener("keydown", close);
+      document.removeEventListener("pointerdown", close);
+      document.removeEventListener("focusin", close);
+      desktop.removeEventListener("change", resize);
+    };
+  }, [open]);
+  const navigate = (id) => {
+    setOpen(false);
+    setActive(id);
+    requestAnimationFrame(() =>
+      document.getElementById(id)?.focus({ preventScroll: true }),
+    );
+  };
   return (
-    <div className="navbar">
-      {/* SideBar */}
-      <Sidebar />
-      <div className="wrapper">
-        <motion.span
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+    <header className="navbar" ref={header}>
+      <div className="container nav-inner">
+        <a className="brand" href="#home" aria-label="sv. Shivansh Verma, home">
+          <span className="brand-mark">
+            sv<span>.</span>
+          </span>
+          <span className="brand-name">Shivansh Verma</span>
+        </a>
+        <nav
+          className={open ? "nav-links is-open" : "nav-links"}
+          id="site-navigation"
+          aria-label="Main navigation"
         >
-          Portfolio
-        </motion.span>
-        <div className="social">
-          <a href="https://www.linkedin.com/in/shivansh-verma-650a92222/">
-            <img src="/linkedin.png" alt="linkedinsocial" />
+          {navigation.map(({ id, label }) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              aria-current={active === id ? "location" : undefined}
+              onClick={() => navigate(id)}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+        <div className="nav-actions">
+          <ThemeToggle />
+          <a
+            className="button button-small button-secondary"
+            href={profile.resume}
+            download
+          >
+            Resume <span aria-hidden="true">↗</span>
           </a>
-          <a href="https://github.com/shivansh-verma13">
-            <img src="/github.png" alt="githubsocial" />
-          </a>
-          <a href="https://twitter.com/VerShivu">
-            <img src="/twitter.png" alt="twittersocial" />
-          </a>
-          <a href="https://www.instagram.com/_shivansh.v">
-            <img src="/instagram.png" alt="instagramsocial" />
-          </a>
+          <button
+            className="menu-toggle"
+            type="button"
+            ref={toggle}
+            aria-expanded={open}
+            aria-controls="site-navigation"
+            aria-label={open ? "Close navigation" : "Open navigation"}
+            onClick={() => setOpen(!open)}
+          >
+            <span aria-hidden="true">{open ? "✕" : "☰"}</span>
+          </button>
         </div>
       </div>
-    </div>
+    </header>
   );
-};
+}

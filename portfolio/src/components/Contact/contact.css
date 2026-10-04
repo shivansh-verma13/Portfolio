@@ -1,202 +1,157 @@
-.contact {
-  height: 100%;
-  max-width: 1366px;
-  margin: auto;
-  display: flex;
+.contact-section {
+  border-top: 1px solid var(--border);
+  background: radial-gradient(
+    ellipse at 20% 45%,
+    rgb(106 68 154 / 8%),
+    transparent 55%
+  );
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 95px;
+  align-items: start;
+}
+.contact-copy h2 {
+  font-size: clamp(38px, 4.2vw, 58px);
+  line-height: 1.15;
+  font-weight: 550;
+  letter-spacing: -0.05em;
+  margin: 24px 0;
+}
+.contact-copy h2 span {
+  color: var(--accent);
+}
+.contact-copy > p:not(.eyebrow) {
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.85;
+  max-width: 400px;
+}
+.contact-email {
+  display: inline-flex;
   align-items: center;
-  gap: 50px;
+  gap: 15px;
+  font-size: 15px;
+  margin-top: 35px;
+  padding-block: 8px;
+  border-bottom: 1px solid var(--border-accent);
+  overflow-wrap: anywhere;
 }
-
-.contactTextContainer {
-  flex: 1;
+.contact-email:hover {
+  color: var(--accent);
+}
+.contact-social {
+  display: flex;
+  gap: 25px;
+  margin-top: 28px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.contact-location {
+  display: block;
+  font-size: 10px;
+  margin-top: 35px;
+}
+.contact-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 30px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
 }
-
-.contactTextContainer > h1 {
-  font-size: 100px;
-  line-height: 88px;
-}
-
-.item {
+.form-heading {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
 }
-
-.item > span {
-  font-weight: 300;
-  align-self: flex-start;
-  margin-left: 0;
-}
-
-.formContainer {
-  flex: 1;
-  position: relative;
-}
-
-.formContainer > form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.formContainer > form > input,
-textarea {
-  padding: 20px;
-  background-color: transparent;
-  border: 1px solid white;
-  color: white;
-  border-radius: 5px;
-}
-
-.formContainer > form > button {
-  padding: 20px;
-  border: none;
-  background-color: orange;
-  cursor: pointer;
+.form-heading h3 {
+  font-size: 17px;
   font-weight: 500;
 }
-
-.formContainer > form > button {
-  position: relative;
-  transition: 0.3s ease-in-out;
-  z-index: 0;
+.form-heading span {
+  font-size: 9px;
 }
-
-.formContainer > form > button > span {
-  z-index: 1;
-  font-weight: 500;
+.contact-form label {
+  margin-bottom: 9px;
+  font-size: 12px;
 }
-
-.formContainer > form > button::before {
-  content: "";
-  width: 0%;
-  height: 100%;
-  position: absolute;
-  background-color: white;
-  left: 0;
-  top: 0;
-  z-index: -1;
-  transition: 0.3s ease-in-out;
-}
-
-.formContainer > form > button:hover {
-  color: orange;
-  border: none;
-  font-weight: 900;
-  font-size: 1.1rem;
-}
-
-.formContainer > form > button:hover::before {
-  content: "";
+.contact-form input,
+.contact-form textarea {
   width: 100%;
-  height: 100%;
+  border: 1px solid var(--border-strong);
+  background: var(--background);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 13px;
+  margin-bottom: 22px;
+}
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: var(--text-muted);
+}
+.contact-form textarea {
+  resize: vertical;
+  min-height: 135px;
+}
+.contact-form .button {
+  width: 100%;
+}
+.contact-form .button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+.form-status {
+  min-height: 34px;
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 15px;
+  color: var(--text-secondary);
+}
+.status-error {
+  color: var(--error);
+}
+.status-success {
+  color: var(--success);
+}
+.honeypot {
   position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
 }
-
-.phone {
-  stroke: orange;
-  position: absolute;
-  margin: auto;
-  z-index: -1;
-}
-
-@media (max-width: 738px) {
-  .contact {
-    width: 100%;
-    max-height: 300px;
-    padding: 10px;
-    flex-direction: column;
-  }
-  .item {
-    align-items: center;
-    /* display: none; */
-  }
-  .contactTextContainer {
-    gap: 5px;
-    text-align: center;
-    align-items: center;
-    margin: 70px;
-    margin-top: 50px;
-    /* height: 50%; */
-  }
-  .contactTextContainer > h1 {
-    font-size: 30px;
-    line-height: 1.5;
-    margin-bottom: 5%;
-  }
-  .formContainer > form > input,
-  textarea {
-    padding: 10px;
-  }
-  .formContainer > form > button {
-    padding: 10px;
-  }
-  .formContainer {
-    padding: 50px;
-    width: 100%;
-    max-height: 300px;
-    margin-top: -40%;
-  }
-  .phone > svg {
-    width: 250px;
-    height: 250px;
+@media (max-width: 1024px) {
+  .contact-grid {
+    gap: 40px;
   }
 }
-
-@media ((max-width: 1024px) and (min-width: 738px)) {
-  .contact {
-    width: 100%;
-    max-height: 300px;
-    padding: 10px;
-    flex-direction: column;
+@media (max-width: 768px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
-  .item {
-    align-items: center;
-    /* display: none; */
+  .contact-form {
+    padding: 24px;
   }
-  .contactTextContainer {
-    gap: 5px;
-    text-align: center;
-    align-items: center;
-    margin: 70px;
-    margin-top: 50px;
-    /* height: 50%; */
-  }
-  .contactTextContainer > h1 {
-    font-size: 30px;
-    line-height: 1.5;
-    margin-bottom: 5%;
-    margin-top: 8%;
-  }
-  .formContainer > form > input,
-  textarea {
-    padding: 10px;
-    width: 100%;
-  }
-  .formContainer > form > button {
-    padding: 10px;
-  }
-  .formContainer {
-    padding: 50px;
-    width: 100%;
-    max-height: 300px;
-    /* margin-top: -40%; */
-  }
-  .phone > svg {
-    width: 450px;
-    height: 450px;
+  .contact-copy h2 {
+    font-size: 43px;
   }
 }
-
-@media (max-width: 1366px) and (min-width: 1024px) {
-  .contact {
-    margin: 8%;
+@media (max-width: 360px) {
+  .contact-copy h2 {
+    font-size: 35px;
   }
-  .contactTextContainer > h1{
-    font-size: 50px;
+  .contact-email {
+    font-size: 12px;
+    gap: 8px;
   }
-  /*  */
+  .contact-form {
+    padding: 20px;
+  }
 }

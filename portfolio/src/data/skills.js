@@ -1,0 +1,51 @@
+export const skills = [
+  {
+    title: "Frontend engineering",
+    number: "01",
+    description: "Fast interfaces. Thoughtful interactions.",
+    primary: ["React", "Next.js", "Angular", "TypeScript"],
+    secondary: [
+      "Vue.js",
+      "JavaScript",
+      "Tailwind CSS",
+      "Material UI",
+      "Framer Motion",
+    ],
+  },
+  {
+    title: "Backend & real-time",
+    number: "02",
+    description: "APIs and services that connect the product.",
+    primary: ["Node.js", "NestJS", "Express", "REST APIs"],
+    secondary: ["WebSockets", "JWT", "API integration & testing"],
+  },
+  {
+    title: "Data & infrastructure",
+    number: "03",
+    description: "Storage, delivery, and performance.",
+    primary: ["MongoDB", "SQL", "Docker", "CI/CD"],
+    secondary: ["AWS", "Azure", "GCP", "Cloudflare Tunnels"],
+  },
+  {
+    title: "AI engineering",
+    number: "04",
+    description: "Grounded answers. Observable workflows.",
+    primary: ["LLMs", "RAG", "Multi-agent systems", "FAISS"],
+    secondary: [
+      "Embeddings",
+      "Vapi",
+      "Langfuse",
+      "Prompt engineering",
+      "Guardrails",
+      "Evaluations",
+      "OpenAI integrations",
+    ],
+  },
+  {
+    title: "Engineering tools",
+    number: "05",
+    description: "Collaborate, inspect, and iterate.",
+    primary: ["Git", "GitHub", "Databricks", "Tableau"],
+    secondary: ["Code reviews", "Documentation", "Performance profiling"],
+  },
+];

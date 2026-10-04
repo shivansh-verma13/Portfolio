@@ -1,107 +1,173 @@
-import { useRef } from "react";
-import "./portfolio.css";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import PropTypes from "prop-types";
-
-const items = [
-  {
-    id: 1,
-    title: "MERN-ChatBot",
-    img: "/chatbot.png",
-    demo: "https://youtu.be/9jNV4EnDWD8",
-    desc: "Developed a MERN Stack app using OpenAI’s 3.5 Turbo model. Integrated Material UI for an intuitive UI. Enabled users to receive instant responses to queries",
-  },
-  {
-    id: 2,
-    title: "MERN-ChattingApp",
-    img: "/chattingApp.png",
-    demo: "https://youtu.be/Mva_jt6xWJo",
-    desc: "Developed a dynamic MERN Stack app Chatting App incorporated with emojis. Implemented Web Sockets for real-time messaging. Enhanced user engagement with Tailwind CSS and Animate on Scroll",
-  },
-  {
-    id: 3,
-    title: "MERN-RecipeBlog",
-    img: "/recipleBlog.png",
-    demo: "https://youtu.be/NR5wuXwaJ0Q",
-    desc: "Developed a captivating recipe blog app with MERN Stack and Material UI. Featured robust authentication functionality. Provided users with an immersive experience to explore and share favorite recipes securely",
-  },
-  {
-    id: 4,
-    title: "VideoMeet",
-    img: "/videoMeet.png",
-    demo: "https://videomeeet.netlify.app/",
-    desc: "Created a MERN Stack app utilizing WebRTC and Tailwind CSS. Crafted a Google Meet replica for two peers. Showcased expertise in real-time communication technologies",
-  },
-  {
-    id: 4,
-    title: "MERN-Notepad",
-    img: "/notepad.png",
-    demo: "https://youtu.be/z_Xg0T2b-AY",
-    desc: "Created a MERN stack notepad app with Material UI. Implemented features for updating, deleting, and adding notes. Provided users with a convenient platform for managing notes",
-  },
-];
-
-const Single = ({ item }) => {
-  const ref = useRef();
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [-500, 500]);
-
+import { projects, otherProjects } from "../../data/projects";
+import SectionHeading from "../shared/SectionHeading";
+import Reveal from "../shared/Reveal";
+import Arrow from "../shared/Arrow";
+import "./portfolio.css";
+function ProjectVisual({ kind }) {
+  const flows = {
+    interview: {
+      heading: "INTERVIEW PIPELINE",
+      nodes: ["Resume", "Questions", "Interview"],
+      bottom: "TRANSCRIPT / SCHEDULING / RETRIES",
+      symbol: "≈",
+    },
+    rag: {
+      heading: "RETRIEVAL + ORCHESTRATION",
+      nodes: ["Question", "Retrieve", "Respond"],
+      bottom: "CONTEXT / GUARDRAILS / EVALUATION",
+      symbol: "✳",
+    },
+    extractor: {
+      heading: "INBOX → STRUCTURED DATA",
+      nodes: ["Email", "Extract", "Review"],
+      bottom: "ATTACHMENTS / MAPPING / VALIDATION",
+      symbol: "⌘",
+    },
+  };
+  const flow = flows[kind];
   return (
-    <section>
-      <div className="portfolioContainer">
-        <div className="portfolioWrapper">
-          <div className="portfolioImageContainer" ref={ref}>
-            <img src={item.img} alt="PortfolioImage" />
+    <div className={`project-visual visual-${kind}`} aria-hidden="true">
+      <div className="preview-top">
+        <span>{flow.heading}</span>
+        <span className="preview-dots">•••</span>
+      </div>
+      <div className="flow-symbol">{flow.symbol}</div>
+      <div className="flow-nodes">
+        {flow.nodes.map((node, index) => (
+          <div key={node}>
+            <span className="flow-node">{node}</span>
+            {index < 2 && <span className="flow-arrow">→</span>}
           </div>
-          <motion.div className="portfolioTextContainer" style={{ y }}>
-            <h2>{item.title}</h2>
-            <p>{item.desc}</p>
-            <button>
-              <a href={item.demo ? item.demo : "#"}>See Demo</a>
-            </button>
-          </motion.div>
-        </div>
+        ))}
       </div>
-    </section>
+      <p className="preview-bottom">{flow.bottom}</p>
+    </div>
   );
-};
-
-const Portfolio = () => {
-  const ref = useRef();
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["end end", "start start"],
-  });
-
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-  });
-
+}
+ProjectVisual.propTypes = { kind: PropTypes.string.isRequired };
+function ProjectLinks({ links, title }) {
+  if (!links) return null;
   return (
-    <div className="portfolio" ref={ref}>
-      <div className="progress">
-        <h1>Featured Works</h1>
-        <motion.div style={{ scaleX }} className="progress-bar"></motion.div>
-      </div>
-      {items.map((item, idx) => (
-        <Single key={idx} item={item} />
+    <div className="project-links">
+      {links.map((link) => (
+        <a
+          key={link.url}
+          href={link.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${link.label}: ${title}`}
+        >
+          {link.label} <Arrow />
+        </a>
       ))}
     </div>
   );
+}
+ProjectLinks.propTypes = {
+  links: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+    }),
+  ),
+  title: PropTypes.string.isRequired,
 };
-
-export default Portfolio;
-
-Single.propTypes = {
-  item: PropTypes.object,
-  id: PropTypes.number,
-  title: PropTypes.string,
-  img: PropTypes.string,
-  desc: PropTypes.string,
-};
+export default function Portfolio() {
+  return (
+    <section
+      className="section container"
+      id="work"
+      tabIndex={-1}
+      aria-label="Selected work"
+    >
+      <SectionHeading
+        number="03"
+        eyebrow="SELECTED WORK"
+        title="Built to solve a real problem."
+        description="A selection of professional systems, an award-winning prototype, and personal projects."
+      />
+      <div className="projects-grid">
+        {projects.map((project) => (
+          <Reveal key={project.id}>
+            <article className="project-card">
+              {project.image ? (
+                <div className="project-image">
+                  <img
+                    src={project.image}
+                    alt={project.alt}
+                    loading="lazy"
+                    decoding="async"
+                    width="800"
+                    height="450"
+                  />
+                </div>
+              ) : (
+                <ProjectVisual kind={project.visual} />
+              )}
+              <div className="project-body">
+                <div className="project-type">
+                  <span>{project.type}</span>
+                  {project.badge && (
+                    <span className="project-badge">{project.badge}</span>
+                  )}
+                </div>
+                <h3>{project.title}</h3>
+                <p>{project.description}</p>
+                <div className="tags">
+                  {project.stack.map((tech) => (
+                    <span key={tech}>{tech}</span>
+                  ))}
+                </div>
+                <details className="engineering-details">
+                  <summary>
+                    Engineering highlights <span aria-hidden="true">+</span>
+                  </summary>
+                  <ul>
+                    {project.highlights.map((highlight) => (
+                      <li key={highlight}>{highlight}</li>
+                    ))}
+                  </ul>
+                </details>
+                <ProjectLinks links={project.links} title={project.title} />
+              </div>
+            </article>
+          </Reveal>
+        ))}
+      </div>
+      <p className="work-note muted">
+        Professional systems are described at a high level. Internal source code
+        and client-sensitive details remain private. Workflow illustrations are
+        conceptual, not product screenshots.
+      </p>
+      <details className="other-projects">
+        <summary>
+          <span>
+            Other projects <span className="mono muted"> / 04</span>
+          </span>
+          <span aria-hidden="true">+</span>
+        </summary>
+        <div className="other-grid">
+          {otherProjects.map((project) => (
+            <article key={project.id} className="other-card">
+              {project.image && (
+                <img
+                  src={project.image}
+                  alt={project.alt}
+                  width="600"
+                  height="338"
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
+              <h3>{project.title}</h3>
+              <p className="mono other-stack">{project.stack}</p>
+              <p>{project.description}</p>
+              <ProjectLinks links={project.links} title={project.title} />
+            </article>
+          ))}
+        </div>
+      </details>
+    </section>
+  );
+}

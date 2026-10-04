@@ -1,123 +1,174 @@
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useReducedMotion,
+} from "framer-motion";
+import { profile } from "../../data/profile";
+import Arrow from "../shared/Arrow";
 import "./hero.css";
-import { motion } from "framer-motion";
-import { useMediaQuery, useTheme } from "@mui/material";
-import { MeshDistortMaterial, OrbitControls, Sphere } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-
-const textVariant = {
-  initial: {
-    x: -500,
-    opacity: 0,
-  },
-  animate: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      duration: 1,
-      staggerChildren: 0.1,
-    },
-  },
-  scrollButton: {
-    opacity: 0,
-    y: 10,
-    transition: {
-      duration: 2,
-      repeat: Infinity,
-    },
-  },
-};
-
-const sliderVariant = {
-  initial: {
-    x: 0,
-  },
-  animate: {
-    x: "-220%",
-    transition: {
-      repeat: Infinity,
-      repeatType: "mirror",
-      duration: 20,
-    },
-  },
-};
-
-const Hero = () => {
-  const theme = useTheme();
-  const isBelowMd = useMediaQuery(theme.breakpoints.down("md"));
-
+function EngineeringOrb() {
+  const reduced = useReducedMotion();
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 90, damping: 20 });
+  const springY = useSpring(y, { stiffness: 90, damping: 20 });
+  const move = (event) => {
+    if (reduced || event.pointerType !== "mouse") return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    x.set((event.clientX - rect.left - rect.width / 2) * 0.025);
+    y.set((event.clientY - rect.top - rect.height / 2) * 0.025);
+  };
   return (
-    <div className="hero">
-      <div className="heroWrapper">
-        <motion.div
-          className="textContainer"
-          variants={textVariant}
-          initial="initial"
-          animate="animate"
-        >
-          <motion.h2 variants={textVariant}>SHIVANSH VERMA</motion.h2>
-          <motion.h1 variants={textVariant}>
-            Web developer, Machine Learning engineer and UI designer
-          </motion.h1>
-          <motion.div className="buttons" variants={textVariant}>
-            <motion.button className="worksButton" variants={textVariant}>
-              <a href="#Portfolio">See the Latest Works</a>
-            </motion.button>
-
-            <motion.button className="contactButton" variants={textVariant}>
-              <a href="#Contact">Contact Me</a>
-            </motion.button>
-          </motion.div>
-          <motion.img
-            variants={textVariant}
-            src="/scroll.png"
-            alt="scrollImage"
-            animate="scrollButton"
-          />
-        </motion.div>
-      </div>
+    <div
+      className="engineering-visual"
+      onPointerMove={move}
+      onPointerLeave={() => {
+        x.set(0);
+        y.set(0);
+      }}
+      aria-hidden="true"
+    >
+      <div className="visual-grid" />
+      <span className="visual-caption">CONNECTED BY DESIGN</span>
       <motion.div
-        className="slidingTextContainer"
-        variants={sliderVariant}
-        initial="initial"
-        animate="animate"
+        className="orb-wrap"
+        style={reduced ? {} : { x: springX, y: springY }}
       >
-        Developer Engineer Designer
-      </motion.div>
-
-      <div style={{ width: "50%" }}>
-        <div
-          style={{
-            position: "absolute",
-            top: "-40%",
-            right: "-40%",
-            zIndex: 0,
-            width: "100%",
-            height: "100vh",
-          }}
-        >
-          <Canvas>
-            <OrbitControls enableZoom={false} autoRotate />
-            <ambientLight intensity={2.2} />
-            <directionalLight position={[3, 2, 1]} />
-            <Sphere args={[1, 100, 200]} scale={1}>
-              <MeshDistortMaterial
-                color="rebeccapurple"
-                attach="material"
-                distort={0.25}
-                speed={3}
+        <svg className="orb" viewBox="0 0 400 400" fill="none">
+          <defs>
+            <radialGradient id="orb-fill" cx=".35" cy=".3">
+              <stop stopColor="#7953b2" stopOpacity=".3" />
+              <stop offset="1" stopColor="#16121f" stopOpacity=".1" />
+            </radialGradient>
+            <linearGradient
+              id="orb-line"
+              x1="70"
+              y1="50"
+              x2="320"
+              y2="360"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stopColor="#c8b0ff" />
+              <stop offset=".5" stopColor="#8860c9" />
+              <stop offset="1" stopColor="#32233f" />
+            </linearGradient>
+          </defs>
+          <circle
+            cx="200"
+            cy="200"
+            r="145"
+            fill="url(#orb-fill)"
+            stroke="url(#orb-line)"
+          />
+          <g stroke="url(#orb-line)" opacity=".65">
+            {[30, 65, 100, 130].map((rx) => (
+              <ellipse
+                key={rx}
+                cx="200"
+                cy="200"
+                rx={rx}
+                ry="145"
+                transform="rotate(-25 200 200)"
               />
-            </Sphere>
-          </Canvas>
-        </div>
-        <div
-          className="imageContainer"
-          // style={{ animation: isBelowMd && "none" }}
-        >
-          <img src={!isBelowMd ? "/hero1.png" : "/hero1.png"} alt="myImage" />
-        </div>
+            ))}
+            {[35, 75, 110].map((ry) => (
+              <ellipse
+                key={ry}
+                cx="200"
+                cy="200"
+                rx="145"
+                ry={ry}
+                transform="rotate(-25 200 200)"
+              />
+            ))}
+          </g>
+          <ellipse
+            cx="200"
+            cy="200"
+            rx="183"
+            ry="51"
+            transform="rotate(-25 200 200)"
+            stroke="#b9a0ed"
+            strokeOpacity=".4"
+            strokeDasharray="2 7"
+          />
+          <circle cx="332" cy="140" r="5" fill="#c8b0ff" />
+          <circle cx="71" cy="262" r="3" fill="#8e6ac8" />
+        </svg>
+      </motion.div>
+      <div className="system-label label-frontend">
+        <span className="label-dot" /> frontend <span>01</span>
+      </div>
+      <div className="system-label label-backend">
+        <span className="label-dot" /> backend <span>02</span>
+      </div>
+      <div className="system-label label-ai">
+        <span className="label-dot" /> AI systems <span>03</span>
+      </div>
+      <div className="visual-bottom">
+        <span>INTERFACE → SERVICE → INTELLIGENCE</span>
+        <span>SV / 2026</span>
       </div>
     </div>
   );
-};
-
-export default Hero;
+}
+export default function Hero() {
+  return (
+    <section id="home" className="hero" aria-labelledby="hero-title">
+      <div className="container hero-grid">
+        <div className="hero-copy">
+          <p className="eyebrow hero-intro">
+            <span className="status-dot" /> SOFTWARE DEVELOPER AT EDMO
+          </p>
+          <p className="hero-name">Hi, I’m Shivansh Verma.</p>
+          <h1 id="hero-title">
+            Software engineer.
+            <br />
+            <span>Built for impact.</span>
+          </h1>
+          <p className="hero-disciplines">
+            Full-Stack <span> / </span> Frontend <span> / </span> AI Systems
+          </p>
+          <p className="hero-description">
+            I build fast, reliable products across frontend, backend, and AI.
+            From production web applications to real-time experiences and
+            conversational systems.
+          </p>
+          <div className="hero-actions">
+            <a className="button button-primary" href="#work">
+              View my work <Arrow />
+            </a>
+            <a
+              className="button button-secondary"
+              href={profile.resume}
+              download
+            >
+              Download resume <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <div className="hero-social">
+            <a href={profile.github} target="_blank" rel="noopener noreferrer">
+              GitHub <span aria-hidden="true">↗</span>
+            </a>
+            <a
+              href={profile.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn <span aria-hidden="true">↗</span>
+            </a>
+            <span>{profile.location}</span>
+          </div>
+        </div>
+        <EngineeringOrb />
+      </div>
+      <div className="container hero-foot">
+        <span>PRODUCTION SOFTWARE. MEASURABLE PROGRESS.</span>
+        <a href="#experience">
+          Explore the experience <span aria-hidden="true">↓</span>
+        </a>
+      </div>
+    </section>
+  );
+}

@@ -1,52 +1,44 @@
-import Contact from "./components/Contact/Contact";
-import Cursor from "./components/Cursor/Cursor";
-import Hero from "./components/Hero/Hero";
-import { Navbar } from "./components/Navbar/Navbar";
-import Portfolio from "./components/Portfolio/Portfolio";
-import Services from "./components/Services/Services";
-import Parallax from "./components/parallax/Parallax";
+import { MotionConfig } from "framer-motion";
 import { Toaster } from "react-hot-toast";
-
-export const App = () => {
+import { Navbar } from "./components/Navbar/Navbar";
+import Hero from "./components/Hero/Hero";
+import About from "./components/About/About";
+import Experience from "./components/Experience/Experience";
+import Portfolio from "./components/Portfolio/Portfolio";
+import Skills from "./components/Skills/Skills";
+import Impact from "./components/Impact/Impact";
+import Education from "./components/Education/Education";
+import Contact from "./components/Contact/Contact";
+import Footer from "./components/Footer/Footer";
+export function App() {
   return (
-    <div>
+    <MotionConfig reducedMotion="user">
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
+      <Navbar />
+      <main id="main" tabIndex={-1}>
+        <Hero />
+        <About />
+        <Experience />
+        <Portfolio />
+        <Skills />
+        <Impact />
+        <Education />
+        <Contact />
+      </main>
+      <Footer />
       <Toaster
-        position="right-top"
+        position="bottom-right"
         toastOptions={{
-          success: {
-            style: {
-              background: "#fff",
-            },
-          },
-          error: {
-            style: {
-              background: "#D04848",
-            },
-          },
-          iconTheme: {
-            primary: "orange",
-            secondary: "#000",
+          style: {
+            background: "var(--surface)",
+            color: "var(--text-primary)",
+            border: "1px solid var(--border-strong)",
+            pointerEvents: "none",
           },
         }}
       />
-      <Cursor />
-      <section id="Homepage">
-        <Navbar />
-        <Hero />
-      </section>
-      <section id="Services">
-        <Parallax type="services" />
-      </section>
-      <section>
-        <Services />
-      </section>
-      <section id="Portfolio">
-        <Parallax type="portfolio" />
-      </section>
-      <Portfolio />
-      <section id="Contact">
-        <Contact />
-      </section>
-    </div>
+    </MotionConfig>
   );
-};
+}

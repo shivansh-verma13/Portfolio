@@ -1,189 +1,258 @@
-.portfolio {
-  position: relative;
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
 }
-
-.portfolio > .progress {
-  position: sticky;
-  top: 0;
-  left: 0;
-  padding: 50px;
-  text-align: center;
-  font-size: 36px;
-  color: orange;
-}
-
-.progress > .progress-bar {
-  height: 10px;
-  background-color: white;
-}
-
-.portfolioContainer {
+.projects-grid > div {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+}
+.project-card {
   width: 100%;
-  height: 100%;
   overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition:
+    border-color 0.25s,
+    transform 0.25s;
 }
-
-.portfolioWrapper {
-  width: 1366px;
-  height: 100%;
-  margin: auto;
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover {
+    border-color: var(--border-accent);
+    transform: translateY(-3px);
+  }
+}
+.project-visual,
+.project-image {
+  aspect-ratio: 16 / 8;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.project-image {
+  background: var(--surface-secondary);
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 50px;
+  padding: 24px;
 }
-
-.portfolioImageContainer {
-  flex: 1;
-  height: 50%;
-}
-
-.portfolioImageContainer > img {
+.project-image img {
+  display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
+  height: auto;
+  border-radius: 8px;
 }
-
-.portfolioTextContainer {
-  flex: 1;
+.project-visual {
+  position: relative;
+  padding: 20px 24px;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgb(135 91 191 / 13%), transparent 65%),
+    var(--surface-secondary);
   display: flex;
   flex-direction: column;
-  gap: 30px;
 }
-
-.portfolioTextContainer > h2 {
-  font-size: 72px;
+.preview-top {
+  font: 9px var(--font-mono);
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-
-.portfolioTextContainer > p {
-  color: gray;
-  font-size: 20px;
+.preview-dots {
+  font-size: 16px;
+  letter-spacing: 4px;
 }
-
-.portfolioTextContainer > button {
-  background-color: orange;
-  border: none;
-  border-radius: 10px;
-  padding: 10px;
-  width: 200px;
-  cursor: pointer;
+.flow-symbol {
+  font-size: 58px;
+  line-height: 1;
+  color: var(--accent);
+  margin: auto;
+  font-family: var(--font-mono);
 }
-
-.portfolioTextContainer > button {
-  position: relative;
-  transition: 0.3s ease-in-out;
-  z-index: 0;
+.flow-nodes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  font: 11px var(--font-mono);
 }
-
-.portfolioTextContainer > button > a {
-  z-index: 1;
+.flow-nodes > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
-
-.portfolioTextContainer > button::before {
-  content: "";
-  border-radius: 10px;
-  width: 0%;
-  height: 100%;
-  position: absolute;
-  background-color: white;
-  left: 0;
-  top: 0;
-  z-index: -1;
-  transition: 0.3s ease-in-out;
+.flow-node {
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+  background: var(--overlay-background);
+  padding: 9px 15px;
 }
-
-.portfolioTextContainer > button:hover {
-  color: orange;
-  border-radius: 10px;
-  border: none;
-  font-weight: bold;
+.flow-arrow {
+  color: var(--text-muted);
 }
-
-.portfolioTextContainer > button:hover::before {
-  content: "";
-  border-radius: 10px;
+.preview-bottom {
+  text-align: center;
+  font: 8px var(--font-mono);
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+.visual-extractor {
+  background:
+    radial-gradient(ellipse at 50% 40%, rgb(73 117 120 / 12%), transparent 65%),
+    var(--surface-secondary);
+}
+.project-body {
+  padding: 27px;
+}
+.project-type {
+  font: 10px var(--font-mono);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  color: var(--text-secondary);
+}
+.project-badge {
+  color: var(--accent);
+}
+.project-body h3 {
+  font-size: 24px;
+  letter-spacing: -0.04em;
+  font-weight: 550;
+  margin: 18px 0 12px;
+}
+.project-body > p {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  min-height: 76px;
+}
+.project-body .tags {
+  margin: 23px 0;
+}
+.engineering-details {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  font-size: 12px;
+}
+.engineering-details summary {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+}
+.engineering-details[open] summary span {
+  transform: rotate(45deg);
+}
+.engineering-details ul {
+  padding-left: 17px;
+  margin-top: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+.project-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  font-size: 12px;
+}
+.project-links a {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: var(--accent);
+  min-height: 28px;
+}
+.project-links a:hover {
+  text-decoration: underline;
+}
+.work-note {
+  font-size: 11px;
+  line-height: 1.8;
+  margin: 25px 0 38px;
+  max-width: 740px;
+}
+.other-projects {
+  border-top: 1px solid var(--border);
+  padding-top: 25px;
+}
+.other-projects > summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 17px;
+}
+.other-projects[open] > summary > span:last-child {
+  transform: rotate(45deg);
+}
+.other-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 25px;
+}
+.other-card {
+  border: 1px solid var(--border);
+  padding: 22px;
+  border-radius: var(--radius);
+}
+.other-card > img {
   width: 100%;
-  height: 100%;
-  position: absolute;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 20px;
 }
-
-@media (max-width: 738px) {
-  .portfolio > .progress {
-    padding-top: calc(100vh - 80px);
-    font-size: 18px;
-    margin-bottom: -10%;
-    /* overflow-y: hidden; */
+.other-card h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+.other-stack {
+  font-size: 10px;
+  margin-bottom: 14px;
+  color: var(--accent);
+}
+.other-card > p:not(.other-stack) {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
   }
-  .portfolioWrapper {
-    flex-direction: column;
+  .project-body > p {
+    min-height: 0;
   }
-  .portfolioImageContainer {
-    width: 100%;
-    max-height: 300px;
+  .project-body {
+    padding: 22px;
   }
-  .portfolioImageContainer > img {
-    object-fit: contain;
-    border-radius: 25%;
-  }
-  .portfolioTextContainer {
-    transform: none !important;
-    padding: 10px;
-    align-items: center;
-    text-align: center;
-  }
-  .portfolioTextContainer > h2 {
-    font-size: 36px;
-  }
-  .portfolioTextContainer > p {
-    font-size: 16px;
+  .other-grid {
+    grid-template-columns: 1fr;
   }
 }
-
-@media ((max-width: 1024px) and (min-width: 738px)) {
-  .portfolio > .progress {
-    padding-top: calc(100vh - 80px);
-    font-size: 18px;
-    /* margin-bottom: -10%; */
-    /* overflow-y: hidden; */
+@media (max-width: 430px) {
+  .project-visual {
+    padding: 16px;
+    aspect-ratio: 16 / 10;
   }
-  .portfolioWrapper {
-    flex-direction: column;
+  .flow-nodes {
+    gap: 5px;
+    font-size: 9px;
   }
-  /* .portfolioImageContainer {
-    width: 100%;
-    max-height: 300px;
-  } */
-  .portfolioImageContainer > img {
-    object-fit: contain;
-    border-radius: 10%;
+  .flow-nodes > div {
+    gap: 5px;
   }
-  .portfolioTextContainer {
-    transform: none !important;
-    padding: 10px;
-    align-items: center;
-    text-align: center;
+  .flow-node {
+    padding: 8px;
   }
-  .portfolioTextContainer > h2 {
-    font-size: 36px;
+  .preview-top {
+    font-size: 8px;
   }
-  .portfolioTextContainer > p {
-    font-size: 16px;
+  .preview-bottom {
+    font-size: 7px;
   }
-}
-
-@media (max-width: 1366px) and (min-width: 1024px) {
-  .portfolioTextContainer > h2 {
-    font-size: 44px;
+  .project-body h3 {
+    font-size: 22px;
   }
-  .portfolioTextContainer > p {
-    font-size: 16px;
-  }
-  .portfolioImageContainer {
-    margin-left: 8%;
-  } 
 }
