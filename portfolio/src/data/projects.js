@@ -46,6 +46,18 @@ export const projects = [
     ],
   },
   {
+    id: "interview-lab",
+    title: "Interview Lab",
+    type: "Personal project",
+    badge: "Live AI practice",
+    image: "/images/interview-lab.png",
+    alt: "Interview Lab saved review with answer-grounded feedback",
+    description: "Role-specific interview practice across text, audio and video, with editable transcripts and saved private reviews.",
+    stack: ["React", "TypeScript", "Express", "MongoDB", "Gemini"],
+    highlights: ["Three questions and one follow-up with quote-validated feedback", "Consent-based audio transcription and local camera preview", "Owner-scoped sessions, replay protection and bounded AI usage"],
+    links: [{label: "Live app", url: "https://shivansh-interview-lab.netlify.app/"}, {label: "Source", url: "https://github.com/shivansh-verma13/MERN-gpt/tree/upgrade/interview-lab"}],
+  },
+  {
     id: "videomeet",
     title: "VideoMeet",
     type: "Personal project",
@@ -62,15 +74,6 @@ export const projects = [
   },
 ];
 export const otherProjects = [
-  {
-    id: "mern-gpt",
-    title: "MERN GPT",
-    stack: "OpenAI · MERN · Material UI",
-    description: "A conversational application integrating GPT-3.5 Turbo.",
-    image: "/images/chatbot.webp",
-    alt: "MERN GPT conversation interface",
-    links: [{ label: "Video demo", url: "https://youtu.be/9jNV4EnDWD8" }],
-  },
   {
     id: "realtime-chat",
     title: "Real-time chat",
